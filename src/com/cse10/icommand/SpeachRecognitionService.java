@@ -160,6 +160,11 @@ public class SpeachRecognitionService extends Service {
 				Log.d("Speech", "result=" + strlist.get(i));
 			}
 			processCommand(strlist);
+//			mSpeechRecognizer= SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+//			SpeechRecognitionListener listener = new SpeechRecognitionListener();
+		mSpeechRecognizer.setRecognitionListener(this);
+
+			mSpeechRecognizer.startListening(RecognizerIntent.getVoiceDetailsIntent(getApplicationContext()));
 
 		}
 
