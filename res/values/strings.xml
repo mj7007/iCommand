@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">iCommand</string>
+    <string name="help">Help</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="click_me">Click Me!</string>
+    <string name="click_me_guide">Click the button and start speaking</string>
+    <string name="instant_command_guide">To give instant command, click the speak button and start speaking</string>
+    <string name="run_in_bg_guide">You can run any command when you are not using this app by starting the service</string>
+
+</resources>
