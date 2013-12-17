@@ -255,7 +255,10 @@ public class SpeachRecognitionService extends Service {
 		
 		private void callPhone(String number) {
 			if(number != null) {
+			
+				
 				Intent callIntent = new Intent(Intent.ACTION_CALL);
+				callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				callIntent.setData(Uri.parse("tel:" + number));
 				startActivity(callIntent);
 			}
