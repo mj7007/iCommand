@@ -3,11 +3,15 @@ package com.cse10.icommand;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 import com.cse10.icommand.R;
+import com.cse10.icommand.objects.Contact;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -57,6 +61,8 @@ public class MainActivity extends Activity {
 		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 		//message to display while listening
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "What's your command?");
+        //calling package
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, ContactsContract.Contacts.CONTENT_URI);
         //start listening
         startActivityForResult(intent, RECOGNIZE_VOICE_REQUEST_CODE);
 	}
@@ -124,43 +130,89 @@ public class MainActivity extends Activity {
 	
 	private void showSuggestedContacts(ArrayList<String> nameList) {
 		if(nameList != null) {
+			Vector<Contact> setOfSuggestions = null;
 			
 			Iterator<String> it = nameList.iterator();
 			while(it.hasNext()) {
 				String name = it.next();
-				boolean matchFound = false;
 				
 				// query contacts
 				Cursor c = getContentResolver().query(android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
 						new String[] {
                         	ContactsContract.CommonDataKinds.Phone.NUMBER,
-                        	ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
                         	ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME }, 
                         ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE '%"+ name +"%'", null, 
                         ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
 				
 				while(c.moveToNext()) {
-					matchFound = true;
+					// initialize set if null
+					if(setOfSuggestions == null)	setOfSuggestions = new Vector<Contact>();
 					
-					// making the call
-					showMessage("Calling " + c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-					callPhone(c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+					// obtaining details
+					String displayName = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME ));
+					String phoneNumber = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 					
-					break;
+					Log.v("Name", displayName + " - " + phoneNumber);
+					
+					// create new contact
+					Contact contact = new Contact();
+					contact.setDisplayName(displayName);
+					contact.setPhoneNumber(phoneNumber);
+					setOfSuggestions.add(contact);
 					
 				}
 				
 				c.close();
-				
-				// if no match found
-				if(!matchFound) {
-					showMessage(Constants.CONTACT_NOT_FOUND);
-				}
-				
 			}
+			
+			// if no match found
+			if(setOfSuggestions == null) {
+				showMessage(Constants.CONTACT_NOT_FOUND);
+			} else {
+				// match found
+				// check whether there is only one match
+				if(setOfSuggestions.size() == 1) {
+					Contact tempContact = setOfSuggestions.get(0);
+					showMessage("Calling " + tempContact.getDisplayName());
+					callPhone(tempContact.getPhoneNumber());
+				} else {
+					// promt user to pick one
+					showDialogOfSuggestedContacts(setOfSuggestions);
+				}
+			}
+			
 		}
 	}
 
+	private void showDialogOfSuggestedContacts(final Vector<Contact> vector) {
+		if(vector != null) {
+			// create content for alert
+			ArrayList<String> array = new ArrayList<String>();
+			Iterator<Contact> it = vector.iterator();
+			while(it.hasNext()) {
+				Contact contact = it.next();
+				array.add(contact.getDisplayName() + " --> " + contact.getPhoneNumber());
+			}
+			
+			AlertDialog.Builder alertContacts = new AlertDialog.Builder(this);
+			alertContacts.setTitle("Suggessted Contacts : Pick One");
+			alertContacts.setSingleChoiceItems(array.toArray(new String[]{}), -1, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.cancel();
+					
+					Contact tempContact = vector.get(which);
+					showMessage("Calling " + tempContact.getDisplayName());
+					callPhone(tempContact.getPhoneNumber());
+				}
+			});
+			
+			alertContacts.create();
+			alertContacts.show();
+		}
+	}
+	
 	private void showMessage(String text) {
 		Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
 	}
