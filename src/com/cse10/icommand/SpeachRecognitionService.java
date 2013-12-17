@@ -160,6 +160,11 @@ public class SpeachRecognitionService extends Service {
 				Log.d("Speech", "result=" + strlist.get(i));
 			}
 			processCommand(strlist);
+//			mSpeechRecognizer= SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+//			SpeechRecognitionListener listener = new SpeechRecognitionListener();
+		mSpeechRecognizer.setRecognitionListener(this);
+
+			mSpeechRecognizer.startListening(RecognizerIntent.getVoiceDetailsIntent(getApplicationContext()));
 
 		}
 
@@ -250,7 +255,10 @@ public class SpeachRecognitionService extends Service {
 		
 		private void callPhone(String number) {
 			if(number != null) {
+			
+				
 				Intent callIntent = new Intent(Intent.ACTION_CALL);
+				callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				callIntent.setData(Uri.parse("tel:" + number));
 				startActivity(callIntent);
 			}
