@@ -9,15 +9,15 @@ import android.os.Message;
 import android.widget.Toast;
 
 public class IncomingHandler extends Handler {
-	private WeakReference<SpeachRecognitionService> mtarget;
+	private WeakReference<SpeechRecognitionService> mtarget;
 
-	IncomingHandler(SpeachRecognitionService target) {
-		mtarget = new WeakReference<SpeachRecognitionService>(target);
+	IncomingHandler(SpeechRecognitionService target) {
+		mtarget = new WeakReference<SpeechRecognitionService>(target);
 	}
 
 	@Override
 	public void handleMessage(Message msg) {
-		final SpeachRecognitionService target = mtarget.get();
+		final SpeechRecognitionService target = mtarget.get();
 
 		switch (msg.what) {
 		case Constants.MSG_RECOGNIZER_START_LISTENING:

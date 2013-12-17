@@ -8,5 +8,6 @@
     <string name="click_me_guide">Click the button and start speaking</string>
     <string name="instant_command_guide">To give instant command, click the speak button and start speaking</string>
     <string name="run_in_bg_guide">You can run any command when you are not using this app by starting the service</string>
+    <string name="suggestedContacts">Suggested Contacts : Pick One</string>
 
 </resources>

@@ -2,7 +2,8 @@ package com.cse10.icommand;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
+import java.util.Vector;
+import com.cse10.icommand.objects.Contact;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +24,7 @@ import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.widget.Toast;
 
-public class SpeachRecognitionService extends Service {
+public class SpeechRecognitionService extends Service {
 
 	protected AudioManager mAudioManager;
 	protected SpeechRecognizer mSpeechRecognizer;
@@ -160,7 +161,8 @@ public class SpeachRecognitionService extends Service {
 				Log.d("Speech", "result=" + strlist.get(i));
 			}
 			processCommand(strlist);
-
+			
+			mSpeechRecognizer.startListening(RecognizerIntent.getVoiceDetailsIntent(getApplicationContext()));
 		}
 
 		@Override
@@ -207,50 +209,76 @@ public class SpeachRecognitionService extends Service {
 		
 		private void showSuggestedContacts(ArrayList<String> nameList) {
 			if(nameList != null) {
+				Vector<Contact> setOfSuggestions = null;
 				
 				Iterator<String> it = nameList.iterator();
 				while(it.hasNext()) {
 					String name = it.next();
-					boolean matchFound = false;
 					
 					// query contacts
 					Cursor c = getContentResolver().query(android.provider.ContactsContract.CommonDataKinds.Phone.CONTENT_URI, 
 							new String[] {
 	                        	ContactsContract.CommonDataKinds.Phone.NUMBER,
-	                        	ContactsContract.CommonDataKinds.Phone.CONTACT_ID,
 	                        	ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME }, 
 	                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " LIKE '%"+ name +"%'", null, 
 	                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
 					
 					while(c.moveToNext()) {
-						matchFound = true;
+						// initialize set if null
+						if(setOfSuggestions == null)	setOfSuggestions = new Vector<Contact>();
 						
-						// making the call
-						showMessage("Calling " + c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-						callPhone(c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+						// obtaining details
+						String displayName = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME ));
+						String phoneNumber = c.getString(c.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 						
-						break;
+						Log.v("Name", displayName + " - " + phoneNumber);
+						
+						// create new contact
+						Contact contact = new Contact();
+						contact.setDisplayName(displayName);
+						contact.setPhoneNumber(phoneNumber);
+						setOfSuggestions.add(contact);
 						
 					}
 					
 					c.close();
-					
-					// if no match found
-					if(!matchFound) {
-						showMessage(Constants.CONTACT_NOT_FOUND);
-					}
-					
 				}
+				
+				// if no match found
+				if(setOfSuggestions == null) {
+					showMessage(Constants.CONTACT_NOT_FOUND);
+				} else {
+					// match found
+					// check whether there is only one match
+					if(setOfSuggestions.size() == 1) {
+						Contact tempContact = setOfSuggestions.get(0);
+						showMessage("Calling " + tempContact.getDisplayName());
+						callPhone(tempContact.getPhoneNumber());
+						
+					} else {
+						// promt user to pick one
+						
+						// creating new intent to display dialog
+						Bundle bundle = new Bundle();
+						bundle.putParcelableArrayList(Constants.CONTACTS, new ArrayList<Contact>(setOfSuggestions));
+						Intent intent = new Intent(getApplicationContext(), SuggestedContactsDialog.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(intent);
+						
+					}
+				}
+				
 			}
 		}
-
+		
 		private void showMessage(String text) {
-			Toast.makeText(SpeachRecognitionService.this, text, Toast.LENGTH_SHORT).show();
+			Toast.makeText(SpeechRecognitionService.this, text, Toast.LENGTH_SHORT).show();
 		}
 		
 		private void callPhone(String number) {
 			if(number != null) {
 				Intent callIntent = new Intent(Intent.ACTION_CALL);
+				callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				callIntent.setData(Uri.parse("tel:" + number));
 				startActivity(callIntent);
 			}

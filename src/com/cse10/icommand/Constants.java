@@ -12,5 +12,7 @@ public class Constants {
 	public static final int SUBSTRING_CONST = 5;
 	public static final int MSG_RECOGNIZER_START_LISTENING = 1;
     public static final int MSG_RECOGNIZER_CANCEL = 2;
-	
+    
+    public static final String CONTACTS = "SuggestedContacts";
+    
 }

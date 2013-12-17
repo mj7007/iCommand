@@ -41,6 +41,7 @@ public final class R {
         public static final int help=0x7f050001;
         public static final int instant_command_guide=0x7f050005;
         public static final int run_in_bg_guide=0x7f050006;
+        public static final int suggestedContacts=0x7f050007;
     }
     public static final class style {
         /** 

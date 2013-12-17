@@ -68,12 +68,12 @@ public class MainActivity extends Activity {
 	}
 	
 	public void startService(View button) {
-		Intent intent = new Intent(getApplicationContext(), SpeachRecognitionService.class);
+		Intent intent = new Intent(getApplicationContext(), SpeechRecognitionService.class);
 		startService(intent);
 	}
 	
 	public void stopService(View button) {
-		Intent intent = new Intent(getApplicationContext(), SpeachRecognitionService.class);
+		Intent intent = new Intent(getApplicationContext(), SpeechRecognitionService.class);
 		stopService(intent);
 	}
 	
