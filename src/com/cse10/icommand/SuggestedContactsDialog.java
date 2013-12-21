@@ -1,6 +1,8 @@
 package com.cse10.icommand;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.cse10.icommand.objects.Contact;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,10 +28,18 @@ public class SuggestedContactsDialog extends Activity {
 	}
 
 	private void showDialogOfSuggestedContacts(final ArrayList<Contact> content) {
-		if(content != null) {			
-			AlertDialog.Builder alertContacts = new AlertDialog.Builder(getApplicationContext());
+		if(content != null) {	
+			// create content
+			ArrayList<String> array = new ArrayList<String>();
+			Iterator<Contact> it = content.iterator();
+			while(it.hasNext()) {
+				Contact contact = it.next();
+				array.add(contact.getDisplayName() + "\n" + contact.getPhoneNumber());
+			}
+			
+			AlertDialog.Builder alertContacts = new AlertDialog.Builder(SuggestedContactsDialog.this);
 			alertContacts.setTitle("Suggessted Contacts : Pick One");
-			alertContacts.setSingleChoiceItems(content.toArray(new String[]{}), -1, new DialogInterface.OnClickListener() {
+			alertContacts.setSingleChoiceItems(array.toArray(new String[]{}), -1, new DialogInterface.OnClickListener() {
 				
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
@@ -44,7 +54,7 @@ public class SuggestedContactsDialog extends Activity {
 			
 			alertContacts.create();
 			alertContacts.show();
-		}
+		} 
 	}
 	
 	private void callPhone(String number) {

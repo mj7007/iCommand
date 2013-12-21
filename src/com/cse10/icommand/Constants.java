@@ -5,6 +5,8 @@ public class Constants {
 	// commands
 	public static final String CMD_CALL = "call";
 	public static final String CMD_CLOSE = "close";
+	public static final String CMD_REJECT = "reject";
+	public static final String CMD_ANSWER = "answer";
 	
 	// other
 	public static final String CMD_NOT_RECOGNIZED = "Command not recognized";

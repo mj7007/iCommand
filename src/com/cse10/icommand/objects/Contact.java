@@ -66,5 +66,5 @@ public class Contact implements Parcelable {
 		displayName = parcel.readString();
 		phoneNumber = parcel.readString();
 	}
-
+	
 }

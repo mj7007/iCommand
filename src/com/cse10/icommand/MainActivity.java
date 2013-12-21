@@ -26,7 +26,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
 	private static final int RECOGNIZE_VOICE_REQUEST_CODE = 0;
-	
+	 
     private Button speakButton;
 	
 	@Override
@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
 		//message to display while listening
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "What's your command?");
         //calling package
-        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, ContactsContract.Contacts.CONTENT_URI);
+        intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, this.getPackageName());
         //start listening
         startActivityForResult(intent, RECOGNIZE_VOICE_REQUEST_CODE);
 	}
@@ -191,7 +191,7 @@ public class MainActivity extends Activity {
 			Iterator<Contact> it = vector.iterator();
 			while(it.hasNext()) {
 				Contact contact = it.next();
-				array.add(contact.getDisplayName() + " --> " + contact.getPhoneNumber());
+				array.add(contact.getDisplayName() + "\n" + contact.getPhoneNumber());
 			}
 			
 			AlertDialog.Builder alertContacts = new AlertDialog.Builder(this);

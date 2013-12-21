@@ -9,6 +9,7 @@ import android.os.Message;
 import android.widget.Toast;
 
 public class IncomingHandler extends Handler {
+	
 	private WeakReference<SpeechRecognitionService> mtarget;
 
 	IncomingHandler(SpeechRecognitionService target) {
