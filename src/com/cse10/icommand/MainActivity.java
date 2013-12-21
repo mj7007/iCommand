@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,7 +20,9 @@ import android.database.Cursor;
 import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -52,6 +55,28 @@ public class MainActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if(item.getItemId() == R.id.action_settings) {
+			showCommandsGuide();
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void showCommandsGuide() {
+		Dialog commandsDialog = new Dialog(this);
+		commandsDialog.setContentView(R.layout.help);
+		commandsDialog.setTitle("Commands Guide");
+		commandsDialog.show();
+		
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+		lp.copyFrom(commandsDialog.getWindow().getAttributes());
+		lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+		lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+		commandsDialog.getWindow().setAttributes(lp);
+		
 	}
 
 	public void speakButtonClicked(View button) {

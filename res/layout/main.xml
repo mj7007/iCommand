@@ -1,70 +1,110 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="20dp" >
 
-    <!-- Instant Commands -->
-    
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="INSTANT COMMANDS"
-        android:textSize="20sp" />
-
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="10dip"
-        android:background="#555555" />
-
-    <TextView
-        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"
-        android:text="@string/instant_command_guide" />
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/speakButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dip"
-        android:onClick="speakButtonClicked"
-        android:text="SPEAK" />
-    
-    <!-- Run in Background -->
-    
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="RUN IN BACKGROUND"
-        android:textSize="20sp" />
+        <!-- Instant Commands -->
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="10dip"
-        android:background="#555555" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="INSTANT COMMANDS"
+            android:textSize="20sp" />
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dip"
-        android:text="@string/run_in_bg_guide" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dip"
+            android:background="#555555" />
 
-    <Button
-        android:id="@+id/speakButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="startService"
-        android:text="START SERVICE" />
-    
-    <Button
-        android:id="@+id/speakButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="stopService"
-        android:text="STOP SERVICE" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:text="@string/instant_command_guide" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/speakButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dip"
+            android:onClick="speakButtonClicked"
+            android:text="SPEAK" />
+
+        <!-- Run in Background -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="RUN IN BACKGROUND"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dip"
+            android:background="#555555" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:text="@string/run_in_bg_guide" />
+
+        <Button
+            android:id="@+id/speakButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="startService"
+            android:text="START SERVICE" />
+
+        <Button
+            android:id="@+id/speakButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dip"
+            android:onClick="stopService"
+            android:text="STOP SERVICE" />
+
+        <!-- Call Actions -->
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="INCOMING CALL ACTIONS"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="10dip"
+            android:background="#555555" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/tb_enable"
+                android:paddingRight="5dp"
+                android:text="@string/incoming_call_command_guide" />
+
+            <ToggleButton
+                android:id="@+id/tb_enable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

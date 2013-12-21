@@ -9,5 +9,6 @@
     <string name="instant_command_guide">To give instant command, click the speak button and start speaking</string>
     <string name="run_in_bg_guide">You can run any command when you are not using this app by starting the service</string>
     <string name="suggestedContacts">Suggested Contacts : Pick One</string>
+    <string name="incoming_call_command_guide">To enable commands when receiving a call, enable this feature</string>
 
 </resources>
